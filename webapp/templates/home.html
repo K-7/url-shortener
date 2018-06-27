@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+    {% include "top_bar.html" %}
+    <script>
+
+    </script>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <form id="url_form" action="#">
+                    Enter the URL:<br>
+                    <input type="text" name="url" id="url" value=""/>
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
+            <div class="col-md-6">
+                <table id="url_list" class="table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Full URL</th>
+                        <th>Short URL</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br>
+    </div>
+
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                url: "/url_short/",
+                data: {},
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+                    var $tableBody = $("#url_list").find("tbody");
+                    var markup = "";
+                    for (var i = 0; i < data["url_list"].length; i++) {
+                        var obj = data["url_list"][i];
+                        markup += "<tr id='" + obj["id"] + "'><td>" + obj["id"] + "</td>"
+                        markup += "<td><a href='"+ obj["full_url"] +"' target='_blank'>" + obj["full_url"] + "</a></td>"
+                        markup += "<td><a href='"+ obj["short_url"] +"' target='_blank'>" + obj["short_url"] + "</a></td></tr>"
+                    }
+                    $tableBody.empty();
+                    $tableBody.append(markup);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+
+            $("#url_form").on("submit", function () {
+                var url = $("#url").val();
+                if (url == "") {
+                    alert("Enter valid URL before submiting");
+                    return false;
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "/url_short/",
+                    data: {'url':url},
+                    cache: false,
+                    dataType: "json",
+                    success: function (data) {
+                        alert("Successfully registered");
+                        location.reload();
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            });
+
+        });
+    </script>
+
+{% endblock %}

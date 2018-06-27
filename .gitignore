@@ -1,0 +1,12 @@
+**/*.pyc
+.DS_Store
+**/.DS_Store
+**/.pydevproject
+.pydevproject
+env/
+**/site_media
+*.settings
+.metadata/
+.project
+site_media/
+.idea

@@ -1,0 +1,16 @@
+
+
+.red{
+    color : red;
+}
+
+.grey-border{
+    border : 1px solid #eee;
+}
+
+.error-div{
+    display: block;
+    list-style: none;
+    color: red;
+    margin-bottom: 10px;
+}
